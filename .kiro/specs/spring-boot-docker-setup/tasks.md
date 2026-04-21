@@ -73,25 +73,25 @@ This implementation plan creates a complete Spring Boot 3 development environmen
     - Update .gitignore to exclude target/, .mvn/, IDE files, and logs
     - _Requirements: 5.1, 5.2, 5.3_
 
-  - [-] 5.2 Create initial commit
+  - [x] 5.2 Create initial commit
     - Add all configuration files to Git
     - Commit with message "chore: project bootstrap with docker-compose and config"
     - _Requirements: 5.4_
 
 - [ ] 6. Checkpoint - Verify complete setup
-  - [~] 6.1 Test Docker services and application startup
+  - [x] 6.1 Test Docker services and application startup
     - Start Docker services with docker-compose up -d
     - Start Spring Boot application with mvn spring-boot:run
     - Verify application runs on port 8080 without errors
     - _Requirements: 4.1, 4.2, 4.3, 4.4, 4.5_
 
-  - [~] 6.2 Verify database and cache connections
+  - [x] 6.2 Verify database and cache connections
     - Check application logs for successful PostgreSQL connection
     - Check application logs for successful Redis connection
     - Test actuator health endpoint at http://localhost:8080/actuator/health
     - _Requirements: 4.3, 4.4, 4.5_
 
-- [~] 7. Final checkpoint - Ensure all tests pass
+- [x] 7. Final checkpoint - Ensure all tests pass
   - Ensure all tests pass, ask the user if questions arise.
 
 ## Notes
