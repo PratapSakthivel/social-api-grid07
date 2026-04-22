@@ -24,4 +24,16 @@ public class AddCommentRequest {
     private String content;
     
     private int depthLevel = 0;
+    
+    // Explicit getters for IDE compatibility
+    public Long getAuthorId() { return authorId; }
+    public String getAuthorType() { return authorType; }
+    public String getContent() { return content; }
+    public int getDepthLevel() { return depthLevel; }
+    
+    // Explicit setters for IDE compatibility
+    public void setAuthorId(Long authorId) { this.authorId = authorId; }
+    public void setAuthorType(String authorType) { this.authorType = authorType; }
+    public void setContent(String content) { this.content = content; }
+    public void setDepthLevel(int depthLevel) { this.depthLevel = depthLevel; }
 }

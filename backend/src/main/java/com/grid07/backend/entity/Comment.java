@@ -49,4 +49,22 @@ public class Comment {
     @CreationTimestamp
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
+    
+    // Explicit getters for IDE compatibility
+    public Long getId() { return id; }
+    public Long getPostId() { return postId; }
+    public Long getAuthorId() { return authorId; }
+    public AuthorType getAuthorType() { return authorType; }
+    public String getContent() { return content; }
+    public int getDepthLevel() { return depthLevel; }
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    
+    // Explicit setters for IDE compatibility
+    public void setId(Long id) { this.id = id; }
+    public void setPostId(Long postId) { this.postId = postId; }
+    public void setAuthorId(Long authorId) { this.authorId = authorId; }
+    public void setAuthorType(AuthorType authorType) { this.authorType = authorType; }
+    public void setContent(String content) { this.content = content; }
+    public void setDepthLevel(int depthLevel) { this.depthLevel = depthLevel; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 }
