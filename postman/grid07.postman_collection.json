@@ -1,0 +1,346 @@
+{
+  "info": {
+    "name": "Grid07 Backend Assignment",
+    "_postman_id": "grid07-backend-api",
+    "description": "Complete API collection for Grid07 Backend Assignment with all endpoints and test scenarios",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "type": "string"
+    },
+    {
+      "key": "postId",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "userId",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "botId",
+      "value": "1",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Phase 1 - Core API",
+      "item": [
+        {
+          "name": "Create Post (USER)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"authorId\": 1,\n  \"authorType\": \"USER\",\n  \"content\": \"Hello world, this is my first post!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/posts",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "posts"]
+            },
+            "description": "Create a new post authored by a USER"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Post (BOT)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"authorId\": 1,\n  \"authorType\": \"BOT\",\n  \"content\": \"Bot generated content here\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/posts",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "posts"]
+            },
+            "description": "Create a new post authored by a BOT"
+          },
+          "response": []
+        },
+        {
+          "name": "Add Comment (USER)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"authorId\": 1,\n  \"authorType\": \"USER\",\n  \"content\": \"Great post!\",\n  \"depthLevel\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/posts/{{postId}}/comments",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "posts", "{{postId}}", "comments"]
+            },
+            "description": "Add a human comment to a post (no guardrails, +50 virality)"
+          },
+          "response": []
+        },
+        {
+          "name": "Add Comment (BOT)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"authorId\": 1,\n  \"authorType\": \"BOT\",\n  \"content\": \"Nice post!\",\n  \"depthLevel\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/posts/{{postId}}/comments",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "posts", "{{postId}}", "comments"]
+            },
+            "description": "Add a bot comment (subject to guardrails, +1 virality)"
+          },
+          "response": []
+        },
+        {
+          "name": "Like Post",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/posts/{{postId}}/like?userId={{userId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "posts", "{{postId}}", "like"],
+              "query": [
+                {
+                  "key": "userId",
+                  "value": "{{userId}}"
+                }
+              ]
+            },
+            "description": "Like a post (+20 virality points)"
+          },
+          "response": []
+        }
+      ],
+      "description": "Basic CRUD operations for posts and comments"
+    },
+    {
+      "name": "Phase 2 - Guardrail Tests",
+      "item": [
+        {
+          "name": "Test Vertical Cap (Depth 21 - Should Fail)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"authorId\": 1,\n  \"authorType\": \"BOT\",\n  \"content\": \"Deep reply\",\n  \"depthLevel\": 21\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/posts/{{postId}}/comments",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "posts", "{{postId}}", "comments"]
+            },
+            "description": "Expected: 429 Too Many Requests - depth exceeds 20 levels"
+          },
+          "response": []
+        },
+        {
+          "name": "Test Cooldown Cap (First Interaction)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"authorId\": 1,\n  \"authorType\": \"BOT\",\n  \"content\": \"First interaction\",\n  \"depthLevel\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/posts/{{postId}}/comments",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "posts", "{{postId}}", "comments"]
+            },
+            "description": "Expected: 201 Created - first interaction allowed"
+          },
+          "response": []
+        },
+        {
+          "name": "Test Cooldown Cap (Second Interaction - Should Fail)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"authorId\": 1,\n  \"authorType\": \"BOT\",\n  \"content\": \"Second interaction\",\n  \"depthLevel\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/posts/{{postId}}/comments",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "posts", "{{postId}}", "comments"]
+            },
+            "description": "Expected: 429 Too Many Requests - cooldown active for 10 minutes"
+          },
+          "response": []
+        },
+        {
+          "name": "Test Virality Score Tracking",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/posts/{{postId}}/like?userId={{userId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "posts", "{{postId}}", "like"],
+              "query": [
+                {
+                  "key": "userId",
+                  "value": "{{userId}}"
+                }
+              ]
+            },
+            "description": "Like post to test virality score (+20 points). Check Redis: GET post:1:virality_score"
+          },
+          "response": []
+        }
+      ],
+      "description": "Test all three guardrails: vertical cap, horizontal cap, cooldown cap"
+    },
+    {
+      "name": "Phase 3 - Notification Tests",
+      "item": [
+        {
+          "name": "Trigger Immediate Notification",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"authorId\": 10,\n  \"authorType\": \"BOT\",\n  \"content\": \"First bot interaction\",\n  \"depthLevel\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/posts/{{postId}}/comments",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "posts", "{{postId}}", "comments"]
+            },
+            "description": "First bot interaction - should send immediate notification and set 15-min cooldown"
+          },
+          "response": []
+        },
+        {
+          "name": "Trigger Buffered Notification",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"authorId\": 11,\n  \"authorType\": \"BOT\",\n  \"content\": \"Second bot interaction\",\n  \"depthLevel\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/posts/{{postId}}/comments",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "posts", "{{postId}}", "comments"]
+            },
+            "description": "Second bot interaction during cooldown - should buffer in Redis list"
+          },
+          "response": []
+        }
+      ],
+      "description": "Test notification throttling and batching logic"
+    },
+    {
+      "name": "Edge Cases",
+      "item": [
+        {
+          "name": "Invalid Post ID (404)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"authorId\": 1,\n  \"authorType\": \"USER\",\n  \"content\": \"Comment on non-existent post\",\n  \"depthLevel\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/posts/999/comments",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "posts", "999", "comments"]
+            },
+            "description": "Expected: 404 Not Found"
+          },
+          "response": []
+        },
+        {
+          "name": "Like Non-Existent Post (404)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/posts/999/like?userId=1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "posts", "999", "like"],
+              "query": [
+                {
+                  "key": "userId",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Expected: 404 Not Found"
+          },
+          "response": []
+        }
+      ],
+      "description": "Test error handling and edge cases"
+    }
+  ]
+}
