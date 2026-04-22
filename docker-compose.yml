@@ -1,21 +1,6 @@
 version: '3.8'
 
 services:
-  grid07-postgres:
-    image: postgres:15
-    container_name: grid07-postgres
-    environment:
-      POSTGRES_DB: grid07db
-      POSTGRES_USER: grid07user
-      POSTGRES_PASSWORD: grid07pass
-      PGUSER: grid07user
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    restart: unless-stopped
-    command: ["postgres", "-c", "log_statement=all"]
-
   grid07-redis:
     image: redis:7
     container_name: grid07-redis
@@ -26,5 +11,4 @@ services:
     restart: unless-stopped
 
 volumes:
-  postgres_data:
   redis_data:
