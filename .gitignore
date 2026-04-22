@@ -1,3 +1,6 @@
+# Kiro IDE
+.kiro/
+
 # Maven
 target/
 .mvn/
