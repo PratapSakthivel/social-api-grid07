@@ -86,27 +86,27 @@ Build a robust API gateway that acts as a **gatekeeper** for bot interactions, p
 
 ```mermaid
 graph TB
-    subgraph "Client Layer"
+    subgraph ClientLayer["Client Layer"]
         C1[Web Client]
         C2[Mobile App]
         C3[Bot Service]
     end
     
-    subgraph "API Gateway"
-        SB[Spring Boot 3.2.5<br/>Port 8080]
+    subgraph APIGateway["API Gateway"]
+        SB["Spring Boot 3.2.5<br/>Port 8080"]
     end
     
-    subgraph "Business Logic"
+    subgraph BusinessLogic["Business Logic"]
         PC[PostController]
         PS[PostService]
         VS[ViralityService]
         NS[NotificationService]
-        SCH[NotificationScheduler<br/>@Scheduled 5min]
+        SCH["NotificationScheduler<br/>@Scheduled 5min"]
     end
     
-    subgraph "Data Layer"
-        PG[(PostgreSQL<br/>Neon Cloud<br/>Source of Truth)]
-        RD[(Redis 7<br/>Docker<br/>Gatekeeper)]
+    subgraph DataLayer["Data Layer"]
+        PG[("PostgreSQL<br/>Neon Cloud<br/>Source of Truth")]
+        RD[("Redis 7<br/>Docker<br/>Gatekeeper")]
     end
     
     C1 --> SB
@@ -493,12 +493,12 @@ redis-cli LLEN user:1:pending_notifs
 
 ```mermaid
 graph LR
-    A[Bot Interaction] --> B{Notification<br/>Cooldown Active?}
-    B -->|No| C[Send Immediate<br/>Notification]
-    B -->|Yes| D[Buffer in<br/>Redis List]
-    C --> E[Set 15-min<br/>Cooldown]
-    D --> F[CRON Sweeper<br/>Every 5 min]
-    F --> G[Summarize &<br/>Send Batch]
+    A[Bot Interaction] --> B{"Notification<br/>Cooldown Active?"}
+    B -->|No| C["Send Immediate<br/>Notification"]
+    B -->|Yes| D["Buffer in<br/>Redis List"]
+    C --> E["Set 15-min<br/>Cooldown"]
+    D --> F["CRON Sweeper<br/>Every 5 min"]
+    F --> G["Summarize &<br/>Send Batch"]
     G --> H[Clear List]
     
     style C fill:#2ecc71
