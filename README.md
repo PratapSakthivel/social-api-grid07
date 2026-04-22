@@ -1,4 +1,4 @@
-# 🚀 Grid07 Backend Assignment - Social API with Atomic Guardrails
+# Grid07 Backend Assignment - Social API with Atomic Guardrails
 
 <div align="center">
 
