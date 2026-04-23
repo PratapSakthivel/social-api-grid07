@@ -70,11 +70,11 @@ Build a robust API gateway that acts as a **gatekeeper** for bot interactions, p
 │                    ATOMIC GUARDRAILS                        │
 ├─────────────────────────────────────────────────────────────┤
 │                                                             │
-│  1️⃣  HORIZONTAL CAP    →  Max 100 bot replies per post    │
-│  2️⃣  VERTICAL CAP      →  Max depth 20 levels              │
-│  3️⃣  COOLDOWN CAP      →  10-min bot→human interaction     │
-│                                                             │
-│  All enforced via Redis atomic operations (INCR, SET NX)   │
+│  1️⃣  HORIZONTAL CAP    →  Max 100 bot replies per post      │
+│  2️⃣  VERTICAL CAP      →  Max depth 20 levels               │
+│  3️⃣  COOLDOWN CAP      →  10-min bot→human interaction      │
+│                                                              │
+│  All enforced via Redis atomic operations (INCR, SET NX)     │
 └─────────────────────────────────────────────────────────────┘
 ```
 
