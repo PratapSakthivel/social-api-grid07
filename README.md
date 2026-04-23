@@ -424,7 +424,7 @@ public boolean isDepthAllowed(int depthLevel) {
 │                    GATEKEEPER PATTERN                       │
 ├─────────────────────────────────────────────────────────────┤
 │                                                             │
-│  Request → Redis Guardrails → PostgreSQL Database          │
+│  Request → Redis Guardrails → PostgreSQL Database           │
 │                                                             │
 │  ✅ Redis allows  → DB write happens                        │
 │  ❌ Redis rejects → DB write never happens                  │
